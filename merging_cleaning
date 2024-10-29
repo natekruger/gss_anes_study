@@ -1,0 +1,1113 @@
+
+#load packages
+```{r}
+#install.packages("tidyverse")
+library(tidyverse)
+#install.packages("psych")
+library(psych)
+```
+
+
+
+
+
+#read in data file
+```{r}
+ANES_GSS <- read.csv("anes_timeseries_2020_gss_csv_20220408.csv")
+
+
+GSS2018 <- read.csv("general_social_survey_panel_data.csv")
+
+
+```
+
+
+
+
+#Subset dataframe
+```{r}
+ANES_GSS2 <- ANES_GSS %>% select(YEARID, V202013, V202014, V202015, V202016, V202017, V202021, V202022, V202023, V202024, V202025, V202026, V202027, V202028, V202029, V202032, V202033, V202034, V202035, V202036, V202037, V202038, V202039, V202040, V202041, V202042, V202043, V202044, V202045, V202051, V202064, V202064z, V202065x, V202066, V202068x, V202072, V202073, V202073z, V202117, V202118, V202119, V202120b, V202120c, V202120d, V202120e, V202120f, V202120g, V202123, V202123z, V202124, V202124z, V202159, V202160, V202161, V202164, V202165, V202166, V202168, V202169, V202170, V202171, V202172, V202174, V202179, V202180, V202182, V202183, V202205, V202205y1, V202212, V202213, V202214, V202215, V202217, V202218, V202219, V202220, V202221, V202222, V202223, V202224, V202225, V202226, V202227, V202232, V202233, V202234, V202235, V202236x, V202237, V202238, V202239x, V202240, V202241, V202242x, V202243, V202244, V202245x, V202246, V202247, V202248x, V202249, V202250, V202251, V202252x, V202257, V202258, V202259x, V202260, V202261, V202262, V202263, V202266, V202267, V202268, V202269, V202270, V202271, V202272, V202273x, V202291, V202300, V202301, V202302, V202303, V202304, V202305, V202311, V202312, V202317, V202318, V202319, V202320x, V202325, V202332, V202333, V202334, V202335, V202352, V202353, V202354, V202355, V202356, V202356z, V202371, V202372, V202373x, V202374, V202375, V202377, V202378, V202379, V202380x, V202406, V202407, V202408, V202409, V202410, V202411, V202412, V202413, V202414, V202415, V202416, V202417, V202418, V202419, V202420, V202421, V202422, V202423, V202424, V202425, V202426, V202427, V202428, V202429, V202429z, V202430, V202431, V202432, V202433, V202434, V202435,V202436, V202437, V202438, V202439, V202440, V202441, V202442, V202443, V202443z, V202444, V202450a, V202450b, V202450c, V202451, V202452, V202453, V202454, V202455, V202456, V202457, V202458, V202459, V202460, V202461, V202462, V202463, V202464, V202465, V202466, V202467, V202468x, V202469, V202470, V202473, V202474a, V202474b, V202474c, V202474d, V202474e, V202474f, V202475, V202476, V202477, V202478, V202479, V202480, V202481, V202482, V202483, V202484, V202485, V202486, V202487, V202488, V202490x, V202491, V202492, V202493x, V202494, V202495, V202496, V202497, V202498, V202498x, V202499, V202499x, V202500, V202500x, V202501, V202501x, V202502_asian, V202502_pacific, V202502x, V202504, V202505, V202506, V202507, V202508, V202515, V202516, V202517, V202518, V202519, V202520, V202521, V202522, V202523, V202524, V202525, V202526, V202527, V202528, V202529, V202530, V202531, V202532, V202533, V202534, V202535, V202536, V202537, V202538, V202539, V202540, V202541a, V202541b, V202541c, V202541d, V202541e, V202541f, V202541g, V202541h, V202541i, V202542, V202543, V202544, V202545, V202546, V202547, V202548, V202549, V202550, V202551, V202552, V202553, V202554, V202555, V202556, V202565, V202566, V202575, V202576, V202577, V202578, V202579, V202593, V202597, V202621, V202628, V202629, V202630, V202631, V202632, V202633, V202634, V202635)
+```
+
+
+
+#See Subsetted Dataset
+```{r}
+#view subsetted data
+head(ANES_GSS2)
+```
+
+
+
+
+#view item V202013
+```{r}
+
+#view the contents of item V202013
+table(ANES_GSS2$V202013)
+
+```
+
+
+
+#view item v202023
+```{r}
+
+#view the contents of item v202023
+
+table(ANES_GSS2$V202023)
+
+#check to see the variable type as recorded in R
+class(ANES_GSS2$V202023)
+
+
+#make this variable numeric
+ANES_GSS2$V202023 <- as.numeric(ANES_GSS2$V202023)
+
+
+# Recode -1 and -9 to NA in the V202023 variable
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202023 = replace(V202023, V202023 %in% c(-1, -9), NA))
+
+
+#view the contents of item v202023 after recoding
+
+table(ANES_GSS2$V202023)
+```
+class(ANES_GSS2$V202014)
+
+#Making variables numeric
+```{r}
+#make the following vars numeric
+ANES_GSS2$V202042 <- as.numeric(ANES_GSS2$V202042)
+
+ANES_GSS2$V202119 <- as.numeric(ANES_GSS2$V202119)
+
+```
+
+
+```{r}
+
+#recoding negative variables to NA for V202014
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202014 = replace(V202014, V202014 %in% c(-9), NA))
+
+#recoding negative variables to NA for V202015
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202015 = replace(V202015, V202015 %in% c(-9), NA))
+
+#recoding negative variables to NA for V202021
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202021 = replace(V202021, V202021 %in% c(-8, -9), NA))
+
+#recoding negative variables to NA for V202022
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202022 = replace(V202022, V202022 %in% c(-8, -9), NA))
+
+#recoding negative variables to NA for V202023
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202023 = replace(V202023, V202023 %in% c(-1, -9), NA))
+
+#recoding negative variables to NA for V202024
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202024 = replace(V202024, V202024 %in% c(-9), NA))
+
+#recoding negative variables to NA for V202025
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202025 = replace(V202025, V202025 %in% c(-9), NA))
+
+#recoding negative variables to NA for V202026
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202026 = replace(V202026, V202026 %in% c(-9), NA))
+
+#recoding negative variables to NA for V202027
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202027 = replace(V202027, V202027 %in% c(-8, -9), NA))
+
+#recoding negative variables to NA for V202028
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202028 = replace(V202028, V202028 %in% c(-9), NA))
+
+#recoding negative variables to NA for V202029
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202029 = replace(V202029, V202029 %in% c(-8, -9), NA))
+
+#recoding negative variables to NA for V202032
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202032 = replace(V202032, V202032 %in% c(-9), NA))
+
+#recoding negative variables to NA for V202034
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202034 = replace(V202034, V202034 %in% c(-8), NA))
+
+#recoding negative variables to NA for V202036
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202036 = replace(V202036, V202036 %in% c(-8, -9), NA))
+
+#recoding negative variables to NA for V202038
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202038 = replace(V202038, V202038 %in% c(-9), NA))
+
+#recoding negative variables to NA for V202040
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202040 = replace(V202040, V202040 %in% c(-9), NA))
+
+#recoding negative variables to NA for V202042
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202042 = replace(V202042, V202042 %in% c(-9), NA))
+
+#recoding negative variables to NA for V202043
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202043 = replace(V202043, V202043 %in% c(-1), NA))
+  
+#recoding negative variables to NA for V202044
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202044 = replace(V202044, V202044 %in% c(-1), NA))
+
+#recoding negative variables to NA for V202045
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202045 = replace(V202045, V202045 %in% c(-1), NA))
+
+#recoding negative variables to NA for V202043
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202043 = replace(V202043, V202043 %in% c(-1), NA))
+
+#recoding negative variables to NA for V202051
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202051 = replace(V202051, V202051 %in% c(-1, -9), NA))
+    
+#recoding negative variables to NA for V202064
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202064 = replace(V202064, V202064 %in% c(-1, -8, -9), NA))
+
+#recoding negative variables to NA for V202066
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202066 = replace(V202066, V202066 %in% c(-1, -9), NA))
+
+#recoding negative variables to NA for V202068x
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202068x = replace(V202068x, V202068x %in% c(-2), NA))
+
+#recoding negative variables to NA for V202072
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202072 = replace(V202072, V202072 %in% c(-1, -9), NA))
+
+#recoding negative variables to NA for V202073
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202073 = replace(V202073, V202073 %in% c(-1, -8, -9), NA))
+
+#recoding negative variables to NA for V202117
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202117 = replace(V202117, V202117 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202118
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202118 = replace(V202118, V202118 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202119
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202119 = replace(V202119, V202119 %in% c(-1, -5, -9), NA))
+
+#recoding negative variables to NA for V202120b
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202120b = replace(V202120b, V202120b %in% c(-1, -5, -9), NA))
+
+#recoding negative variables to NA for V202120c
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202120c = replace(V202120c, V202120c %in% c(-1, -5, -9), NA))
+
+#recoding negative variables to NA for V202120d
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202120d = replace(V202120d, V202120d %in% c(-1, -5, -9), NA))
+
+#recoding negative variables to NA for V202120e
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202120e = replace(V202120e, V202120e %in% c(-1, -5, -9), NA))
+
+#recoding negative variables to NA for V202120f
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202120f = replace(V202120f, V202120f %in% c(-1, -5, -9), NA))
+
+#recoding negative variables to NA for V202120g
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202120g = replace(V202120g, V202120g %in% c(-1, -5, -9), NA))
+
+#recoding negative variables to NA for V202123
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202123 = replace(V202123, V202123 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202124
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202124 = replace(V202124, V202124 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202125y1
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202205y1 = replace(V202205y1, V202205y1 %in% c(-1, -4 -5, -8, -9, 990, 997), NA))
+
+#recoding negative variables to NA for V202212
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202212 = replace(V202212, V202212 %in% c(-4, -5, -9), NA))
+
+#recoding negative variables to NA for V202213
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202213 = replace(V202213, V202213 %in% c(-5, -9), NA))
+
+#recoding negative variables to NA for V202214
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202214 = replace(V202214, V202214 %in% c(-4, -5, -9), NA))
+
+#recoding negative variables to NA for V202215
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202215 = replace(V202215, V202215 %in% c(-5, -9), NA))
+
+#recoding negative variables to NA for V202217
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202217 = replace(V202217, V202217 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202218
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202218 = replace(V202218, V202218 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202219
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202219 = replace(V202218, V202215 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202220
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202220 = replace(V202220, V202220 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202221
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202221 = replace(V202221, V202221 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202222
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202222 = replace(V202222, V202222 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202223
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202223 = replace(V202223, V202223 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202224
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202224 = replace(V202224, V202224 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202225
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202225 = replace(V202225, V202225 %in% c(-4, -5, -9),NA))
+
+#recoding negative variables to NA for V202226
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202226 = replace(V202226, V202226 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202227
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202227 = replace(V202227, V202227 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202232
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202232 = replace(V202232, V202232 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202233
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202233 = replace(V202233, V202233 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202234
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202234 = replace(V202234, V202234 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202235
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202235 = replace(V202235, V202235 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202236x
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202236x = replace(V202236x, V202236x %in% c(-5, -2), NA))
+
+#recoding negative variables to NA for V202237
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202237 = replace(V202237, V202237 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202238
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202238 = replace(V202238, V202238 %in% c(-5, -9), NA))
+
+#recoding negative variables to NA for V202239x
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202239x = replace(V202239x, V202239x %in% c(-5, -2), NA))
+
+#recoding negative variables to NA for V202240
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202240 = replace(V202240, V202240 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202241
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202241 = replace(V202241, V202241 %in% c(-5, -9), NA))
+
+#recoding negative variables to NA for V202242x
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202242x = replace(V202242x, V202242x %in% c(-5, -2), NA))
+ANES_GSS2 <- ANES_GSS2 %>%
+  
+#recoding negative variables to NA for V202243
+  mutate(V202243 = replace(V202243, V202243 %in% c(-5, -8, -9), NA))
+ANES_GSS2 <- ANES_GSS2 %>%
+  
+#recoding negative variables to NA for V202244
+  mutate(V202244 = replace(V202244, V202244 %in% c(-1, -5, -9), NA))
+ANES_GSS2 <- ANES_GSS2 %>%
+  
+#recoding negative variables to NA for V202245x
+  mutate(V202245x = replace(V202245x, V202245x %in% c(-5, -2), NA))
+ANES_GSS2 <- ANES_GSS2 %>%
+  
+#recoding negative variables to NA for V202246
+  mutate(V202246 = replace(V202246, V202246 %in% c(-5, -8, -9), NA))
+ANES_GSS2 <- ANES_GSS2 %>%
+  
+#recoding negative variables to NA for V202247
+  mutate(V202247 = replace(V202247, V202247 %in% c(-1, -5, -9), NA))
+ANES_GSS2 <- ANES_GSS2 %>%
+  
+#recoding negative variables to NA for V202248x
+  mutate(V202248x = replace(V202248x, V202248x %in% c(-5, -2), NA))
+ANES_GSS2 <- ANES_GSS2 %>%
+  
+#recoding negative variables to NA for V202249
+  mutate(V202249 = replace(V202249, V202249 %in% c(-5, -8, -9), NA))
+ANES_GSS2 <- ANES_GSS2 %>%
+  
+#recoding negative variables to NA for V202250
+  mutate(V202250 = replace(V202250, V202250 %in% c(-1, -5), NA))
+
+#recoding negative variables to NA for V202251
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202251 = replace(V202251, V202251 %in% c(-1, -5, -9), NA))
+
+#recoding negative variables to NA for V202252x
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202252x = replace(V202252x, V202252x %in% c(-5, -2), NA))
+
+#recoding negative variables to NA for V202257
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202257 = replace(V202257, V202257 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202258
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202258 = replace(V202258, V202258 %in% c(-1, -5, -9), NA))
+ANES_GSS2 <- ANES_GSS2 %>%
+  
+#recoding negative variables to NA for V202259x
+  mutate(V202259x = replace(V202259x, V202259x %in% c(-5, -2), NA))
+ANES_GSS2 <- ANES_GSS2 %>%
+  
+#recoding negative variables to NA for V202260
+  mutate(V202260 = replace(V202260, V202260 %in% c(-5, -9), NA))
+
+#recoding negative variables to NA for V202261
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202261 = replace(V202261, V202261 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202262
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202262 = replace(V202262, V202262 %in% c(-5, -9), NA))
+
+#recoding negative variables to NA for V202263
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202263 = replace(V202263, V202263 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202266
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202266 = replace(V202266, V202266 %in% c(-5, -9), NA))
+
+#recoding negative variables to NA for V202267
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202267 = replace(V202267, V202267 %in% c(-5, -9), NA))
+
+#recoding negative variables to NA for V202268
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202268 = replace(V202268, V202268 %in% c(-5, -9), NA))
+
+#recoding negative variables to NA for V202269
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202269 = replace(V202269, V202269 %in% c(-5, -9), NA))
+
+#recoding negative variables to NA for V202270
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202270 = replace(V202270, V202270 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202271
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202271 = replace(V202271, V202271 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202272
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202272 = replace(V202272, V202272 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202273x
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202273x = replace(V202273x, V202273x %in% c(-5, -2), NA))
+
+#recoding negative variables to NA for V202291
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202291 = replace(V202291, V202291 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202300
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202300 = replace(V202300, V202300 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202301
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202301 = replace(V202301, V202301 %in% c(-5, -9), NA))
+
+#recoding negative variables to NA for V202302
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202302 = replace(V202302, V202302 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202303
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202303 = replace(V202303, V202303 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202304
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202304 = replace(V202304, V202304 %in% c(-8, -9), NA))
+
+#recoding negative variables to NA for V202305
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202305 = replace(V202305, V202305 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202311
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202311 = replace(V202311, V202311 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202312
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202312 = replace(V202312, V202312 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202317
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202317 = replace(V202317, V202317 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202318
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202318 = replace(V202318, V202318 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202320x
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202320x = replace(V202320x, V202320x %in% c(-5, -2), NA))
+
+#recoding negative variables to NA for V202325
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202325 = replace(V202325, V202325 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202332
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202332 = replace(V202332, V202332 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202333
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202333 = replace(V202333, V202333 %in% c(-5, -9), NA))
+
+#recoding negative variables to NA for V202334
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202334 = replace(V202334, V202334 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202335
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202335 = replace(V202335, V202335 %in% c(-5, -9), NA))
+
+#recoding negative variables to NA for V202352
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202352 = replace(V202352, V202352 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202353
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202353 = replace(V202353, V202353 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202354
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202354 = replace(V202354, V202354 %in% c(-1, -5, -9), NA))
+
+#recoding negative variables to NA for V202355
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202355 = replace(V202355, V202355 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202356
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202356 = replace(V202356, V202356 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202371
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202371 = replace(V202371, V202371 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202372
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202372 = replace(V202372, V202372 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202373x
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202373x = replace(V202373x, V202373x %in% c(-5, -2), NA))
+
+#recoding negative variables to NA for V202374
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202374 = replace(V202374, V202374 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202375
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202375 = replace(V202375, V202375 %in% c(-1, -5, -9), NA))
+
+#recoding negative variables to NA for V202377
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202377 = replace(V202377, V202377 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202378
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202378 = replace(V202378, V202378 %in% c(-5, -8, -9), NA))
+
+#recoding negative variables to NA for V202379
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202379 = replace(V202379, V202379 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202380x
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202380x = replace(V202380x, V202380x %in% c(-5, -2), NA))
+
+#recoding negative variables to NA for V202406
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202406 = replace(V202406, V202406 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202407
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202407 = replace(V202407, V202407 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202408
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202408 = replace(V202408, V202408 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202409
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202409 = replace(V202409, V202409 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202410
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202410 = replace(V202410, V202410 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202411
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202411 = replace(V202411, V202411 %in% c(-1, -5, -8, -9), NA))
+
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202412 = replace(V202412, V202412 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202413
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202413 = replace(V202413, V202413 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202414
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202414 = replace(V202414, V202414 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202415
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202415 = replace(V202415, V202415 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202416
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202416 = replace(V202416, V202416 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202417
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202417 = replace(V202417, V202417 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202418
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202418 = replace(V202418, V202418 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202419
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202419 = replace(V202419, V202419 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202420
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202420 = replace(V202420, V202420 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202421
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202421 = replace(V202421, V202421 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202422
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202422 = replace(V202422, V202422 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202423
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202423 = replace(V202423, V202423 %in% c(-1, -5, -9), NA))
+
+#recoding negative variables to NA for V202424
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202424 = replace(V202424, V202424 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202425
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202425 = replace(V202425, V202425 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202426
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202426 = replace(V202426, V202426 %in% c(-1, -5, -9), NA))
+
+#recoding negative variables to NA for V202427
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202427 = replace(V202427, V202427 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202428
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202428 = replace(V202428, V202428 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202429
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202429 = replace(V202429, V202429 %in% c(-1, -5, -9), NA))
+
+#recoding negative variables to NA for V202429z
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202429z = replace(V202429z, V202429z %in% c(-1, -5), NA))
+
+#recoding negative variables to NA for V202430
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202430 = replace(V202430, V202430 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202431
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202431 = replace(V202431, V202431 %in% c(-1, -5, -9), NA))
+
+#recoding negative variables to NA for V202432
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202432 = replace(V202432, V202432 %in% c(-1, -5, -9), NA))
+
+#recoding negative variables to NA for V202433
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202433 = replace(V202433, V202433 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202434
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202434 = replace(V202434, V202434 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202454
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202435 = replace(V202435, V202435 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202436
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202436 = replace(V202436, V202436 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202437
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202437 = replace(V202437, V202437 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202438
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202438 = replace(V202438, V202438 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202439
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202439 = replace(V202439, V202439 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202440
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202440= replace(V202440, V202440 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202441
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202441 = replace(V202441, V202441 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202442
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202442 = replace(V202442, V202442 %in% c(-1, -5, -8, -9), NA))
+
+#recoding negative variables to NA for V202443
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202443 = replace(V202443, V202443 %in% c(-1, -5, -9), NA))
+
+#recoding negative variables to NA for V202443
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202443z = replace(V202443z, V202443z %in% c(-2), NA))
+
+#recoding negative variables to NA for V202444
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202444 = replace(V202444, V202444 %in% c(-1, -5, -9), NA))
+
+#recoding negative variables to NA for V202450a
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202450a = replace(V202450a, V202450a %in% c(-5, -9), NA))
+
+#recoding negative variables to NA for V202450b
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202450b = replace(V202450b, V202450b %in% c(-5, -9), NA))
+
+#recoding negative variables to NA for V202450c
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202450c = replace(V202450c, V202450c %in% c(-5, -9), NA))
+
+#recoding negative variables to NA for V202451
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202451 = replace(V202451, V202451 %in% c(-5, -9), NA))
+
+#recoding negative variables to NA for V202452
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202452 = replace(V202452, V202452 %in% c(-5, -9), NA))
+
+#recoding negative variables to NA for V202453
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202453 = replace(V202453, V202453 %in% c(-5, -9), NA))
+
+#recoding negative variables to NA for V202454
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202454 = replace(V202454, V202454 %in% c(-5, -9), NA))
+
+#recoding negative variables to NA for V202455
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202455 = replace(V202455, V202455 %in% c(-5, -9), NA))
+
+#recoding negative variables to NA for V202456
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202456 = replace(V202456, V202456 %in% c(-5, -9), NA))
+
+#recoding negative variables to NA for V202457
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202457 = replace(V202457, V202457 %in% c(-5, -9), NA))
+
+#recoding negative variables to NA for V202458
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202458 = replace(V202458, V202458 %in% c(-2), NA))
+
+#recoding negative variables to NA for V202459
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202459 = replace(V202459, V202459 %in% c(-2), NA))
+
+#recoding negative variables to NA for V202460
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(V202460 = replace(V202460, V202460 %in% c(-2), NA))
+
+#recoding negative variables to NA for V202460-V202468x
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(
+    V202461 = replace(V202461, V202461 %in% c(-2), NA),
+    V202462 = replace(V202462, V202462 %in% c(-2), NA),
+    V202463 = replace(V202463, V202463 %in% c(-2), NA),
+    V202464 = replace(V202464, V202464 %in% c(-2), NA),
+    V202465 = replace(V202465, V202465 %in% c(-2), NA),
+    V202466 = replace(V202466, V202466 %in% c(-2), NA),
+    V202467 = replace(V202467, V202467 %in% c(-2), NA),
+    V202468x = replace(V202468x, V202468x %in% c(-2), NA), 
+    V202470 = replace(V202470, V202470 %in% c(-9, -5, -1), NA), 
+  )
+
+
+#recoding negative variables to NA for V202475-v202499
+ANES_GSS2 <- ANES_GSS2 %>%
+  mutate(
+    V202475 = replace(V202475, V202475 %in% c(-9, -5), NA),
+    V202476 = replace(V202476, V202476 %in% c(-9, -5, -1), NA),
+    V202477 = replace(V202477, V202477 %in% c(-9, -5, -1), NA),
+    V202478 = replace(V202478, V202478 %in% c(-9, -5, -1), NA),
+    V202479 = replace(V202479, V202479 %in% c(-9, -5), NA),
+    V202480 = replace(V202480, V202480 %in% c(-9, -5), NA),
+    V202481 = replace(V202481, V202481 %in% c(-9, -5, -1), NA),
+    V202482 = replace(V202482, V202482 %in% c(-9, -5), NA),
+    V202483 = replace(V202483, V202483 %in% c(-9, -5, -1), NA),
+    V202484 = replace(V202484, V202484 %in% c(-9, -5, -1), NA),
+    V202485 = replace(V202485, V202485 %in% c(-9, -5, -1), NA),
+    V202486 = replace(V202486, V202486 %in% c(-9, -5, -1), NA),
+    V202487 = replace(V202487, V202487 %in% c(-9, -5, -1), NA),
+    V202488 = replace(V202488, V202488 %in% c(-9, -5, -1), NA),
+    V202490x = replace(V202490x, V202490x %in% c(-5, -2), NA),
+    V202491 = replace(V202491, V202491 %in% c(-9, -5), NA),
+    V202492 = replace(V202492, V202492 %in% c(-9, -5, -1), NA),
+    V202493x = replace(V202493x, V202493x %in% c(-5, -2), NA),  
+    V202494 = replace(V202494, V202494 %in% c(-9, -5), NA),
+    V202495 = replace(V202495, V202495 %in% c(-9, -5), NA),
+    V202496 = replace(V202496, V202496 %in% c(-9, -5), NA),
+    V202497 = replace(V202497, V202497 %in% c(-9, -5), NA),
+    V202498 = replace(V202498, V202498 %in% c(-9, -5, -1), NA),
+    V202498x = replace(V202498x, V202498x %in% c(-2), NA),
+    V202499 = replace(V202499, V202499 %in% c(-9, -5, -1), NA),
+    V202499x = replace(V202499x, V202499x %in% c(-2), NA),
+    )
+```
+
+
+
+
+#Rename variables to use more descriptive variable names
+```{r}
+
+#rename multiple variables at a time to use more descriptive names
+ANES_GSS2 <- ANES_GSS2 %>%
+  rename(
+    a_meet = V202013,
+    a_din = V202014,
+    a_adv = V202015,
+    a_work = V202016,
+    a_don_c = V202017,
+    a_don_p = V202021,
+    a_disc = V202022,
+    a_disc_d = V202023, 
+    a_arg = V202024,
+    a_pro = V202025,
+    a_pet = V202026,
+    a_don_r = V202027,
+    a_don_o = V202028,
+    a_com = V202029,
+    a_cmt = V202032,
+    a_vlntr = V202033,
+    a_con_e = V202034,
+    a_con_y = V202035,
+    a_con_n = V202036,
+    a_con_yn = V202037,
+    a_con_es = V202038,
+    a_con_ys = V202039,
+    a_con_ns = V202040,
+    a_con_yo = V202041,
+    a_bc = V202042,
+    a_vt_rg = V202051,
+    a_prg = V202064,
+    a_vt = V202066,
+    a_vt_chk = V202068x,
+    a_vt_p = V202072,
+    a_vt_pw = V202073,
+    a_vt_el = V202073z,
+    a_vt_h = V202117,
+    a_vt_n = V202118,
+    a_vt_df = V202119,
+    a_vt_pr = V202120b,
+    a_vt_ab = V202120c,
+    a_vt_cnf = V202120d,
+    a_vt_diff = V202120e,
+    a_vt_wt = V202120f,
+    a_vt_ws = V202120g,
+    a_vt_rnv = V202123,
+    a_vt_rnvo = V202123z,
+    a_vt_or = V202124,
+    a_vt_oro = V202124z,
+    b_ft_cf = V202159,
+    b_ft_f = V202160,
+    b_ft_l = V202161,
+    b_ft_cf = V202164,
+    b_ft_sc = V202165,
+    b_ft_gl = V202166,
+    b_ft_m = V202168,
+    b_ft_c = V202169,
+    b_ft_j = V202170,
+    b_ft_p = V202171,
+    b_ft_tp = V202172,
+    b_ft_blm = V202174,
+    b_ft_scl = V202179,
+    b_ft_cap = V202180,
+    b_ft_ice = V202182,
+    b_ft_mtm = V202183,
+    b_ft_ip = V202205,
+    b_ft_ipc = V202205y1,
+    b_pcdc = V202212,
+    b_sgov = V202213,
+    b_gcmp = V202214,
+    b_und = V202215,
+    b_csv = V202217,
+    b_wcnv = V202218,
+    b_vfr = V202219,
+    b_hpo = V202220,
+    b_bpo = V202221,
+    b_apo = V202222,
+    b_lpo = V202223,
+    b_wpo = V202224,
+    b_lim = V202225,
+    b_corg = V202226,
+    b_cind = V202227,
+    b_iml = V202232,
+    b_imj = V202233,
+    b_fo_rg = V202234,
+    b_fo_rgs = V202235,
+    b_sfo_rg = V202236x,
+    b_imcr = V202237,
+    b_imcrs = V202238,
+    b_simcr = V202239x,
+    b_fo_cz = V202240,
+    b_fr_czs = V202241,
+    b_sfr_czs = V202242x,
+    b_fr_rui = V202243,
+    b_fr_ruis = V202244,
+    b_sfo_rui = V202245x,
+    b_fo_sp = V202246,
+    b_fo_sps = V202247,
+    b_sfo_sp = V202248x,
+    b_fo_ph = V202249,
+    b_fo_phs = V202250,
+    b_opf = V202251,
+    b_sfo_ph = V202252x,
+    b_fo_ie = V202257,
+    b_fo_ies = V202258,
+    b_fo_rie = V202259x,
+    b_fo_eo = V202260,
+    b_wie = V202261,
+    b_chng = V202262,
+    b_fair = V202263,
+    b_ct_ub = V202271,
+    b_ct_ubs = V202272,
+    b_sct_ub = V202273x,
+    b_ad_wsf = V202291,
+    b_ad_bwk = V202300,
+    b_ad_slv = V202301,
+    b_ad_bld = V202302,
+    b_ad_th = V202303,
+    b_ins = V202304,
+    b_rpga = V202305,
+    b_bpwr = V202311,
+    b_ml = V202312,
+    b_opp = V202317,
+    b_emb = V202318,
+    b_semb = V202320x,
+    b_fo_mil = V202325,
+    b_fo_cc = V202332,
+    b_cci = V202333,
+    b_fo_rg = V202334,
+    b_fo_rgs = V202335,
+    b_soc = V202352,
+    b_class = V202353,
+    a_nlang = V202354,
+    a_lw = V202355,
+    b_sru = V202356,
+    b_sruo = V202356z,
+    b_div = V202371,
+    b_divs = V202372,
+    b_s_div = V202373x,
+    b_ubi = V202374,
+    b_ubistr = V202375,
+    b_minwg = V202377,
+    b_hlth = V202378,
+    b_id_hlt = V202379,
+    b_sid_hlt = V202380x,
+    b_ptx_in = V202406,
+    b_ptx_cf = V202407,
+    b_ptx_un = V202408,
+    b_ae_cs = V202409,
+    b_ae_pc = V202410,
+    b_ae_pt = V202411,
+    b_ae_pp = V202412,
+    b_ae_sl = V202413,
+    b_ae_pd = V202414,
+    b_ae_pr = V202415,
+    b_oga_mn = V202416,
+    b_oga_mj = V202417,
+    b_oga_im = V202418,
+    b_oga_cl = V202419,
+    b_oga_ic = V202420,
+    b_ni_brn = V202421,
+    b_ni_anc = V202422,
+    b_ni_eng = V202423,
+    b_ni_cus = V202424,
+    b_cor = V202425,
+    b_inc = V202426,
+    b_gjb = V202427,
+    b_prty_r = V202428,
+    b_prty = V202429,
+    b_prty_o = V202429z,
+    b_pwr = V202431,
+    b_vt_df = V202432,
+    b_pd_ld = V202433,
+    b_pr_ld = V202434,
+    b_pd_ptx = V202437,
+    b_pr_ptx = V202438,
+    b_lr_s = V202439,
+    b_sdp = V202440,
+    b_cap = V202441,
+    b_fcp = V202442,
+    b_ct = V202443,
+    b_ct_o = V202443z,
+    b_dctp = V202444,
+    a_sd_d = V202450b,
+    a_sd_n = V202450c,
+    b_prf = V202451,
+    b_cfre = V202452,
+    b_ufre = V202453,
+    b_ere = V202454,
+    b_prre = V202455,
+    a_pol = V202456,
+    a_arr = V202457,
+    a_inc = V202458,
+    a_ffglb = V202471,
+    a_WhChg = V202483,
+    a_BlkChg = V202484,
+    a_HisChg = V202485,
+    a_AsChg = V202486,
+    a_WhJob = V202487,
+    b_PolAmt = V202492,
+    b_SumPolT = V202493x,
+    b_HisImp = V202498,
+    b_WhImp = V202499,
+    b_BlkImp = V202500,
+    b_NatImp = V202501,
+    b_AsImp = V202502_asian,
+    b_PacImp = V202502_pacific,
+    b_AmImp = V202504,
+    b_WhRespAf = V202505,
+    b_HisRespAf = V202506,
+    b_BlkRespAf = V202507,
+    b_AsRespAf = V202508,
+    b_StrWhHW = V202515,
+    b_StrBlkHW = V202516,
+    b_StrHisHW = V202517,
+    b_StrHisHW2 = V202518,
+    
+    
+
+
+  )
+
+
+#view data frame now that you changed the variable name
+head(ANES_GSS2)
+```
+
+
+#rename YEAR to YEARID for merging
+```{r}
+GSS2018 <- GSS2018 %>%
+  rename(YEARID = YEAR)
+```
+
+#Join data frames
+```{r}
+
+#check the class of the ID variable, they both need to be numeric
+class(ANES_GSS2$YEARID)
+
+#make the yearID variable numeric
+ANES_GSS2$YEARID <- as.numeric(ANES_GSS2$YEARID)
+
+
+#check class of the GSS2018 ID variable
+class(GSS2018$YEARID)
+
+#make the yearID variable in GSS2018 numeric
+GSS2018$YEARID <- as.numeric(GSS2018$YEARID)
+
+
+
+#check documentation on inner_join, this unlike full_join should only keep the participants whose ID is in both datsets. 
+?inner_join 
+
+ANESGSS_merged <- inner_join(ANES_GSS2, GSS2018, by = "YEARID")
+
+#ANESGSS_merged2 <- full_join(ANES_GSS2, GSS2018, by = "YEARID")
+
+#ANESGSS_merged[ANESGSS_merged=="-1"] <- NA
+#ANESGSS_merged[ANESGSS_merged=="-1"] <- NA
+```
+
+
+
+
+#Save the Wide format Combined data
+```{r}
+#Save merged dataframe as a .csv
+write.csv(ANESGSS_merged, "ANESGSS_merged.csv")
+```
+
