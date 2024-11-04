@@ -50,11 +50,52 @@ head(ANES_GSS2)
 ```{r}
 
 #view the contents of item V202013
-table(ANES_GSS2$V202013)
+table(ANES_GSS2$CA_vote)
 
 ```
 
+#Creating subscale variables for critical action and getting Cronbach's Alpha
+```{r}
 
+ANES_GSS2$CA_con <- ifelse(ANES_GSS2$V202034 == 1 | ANES_GSS2$V202036 == 1 | ANES_GSS2$V202038 == 1 | ANES_GSS2$V202040 == 1, 1, 0)
+
+ANES_GSS2$CA_boyc <- ifelse(ANES_GSS2$V202042 == 2| ANES_GSS2$V202042 == 3| ANES_GSS2$V202042 == 4 | ANES_GSS2$V202042 == 5, 1, 0)
+
+ANES_GSS2$CA_don <- ifelse(ANES_GSS2$V202021 == 1, 1, 0)
+
+ANES_GSS2$CA_pro <- ifelse(ANES_GSS2$V202025 == 1, 1, 0)
+
+ANES_GSS2$CA_meetIP <- ifelse(ANES_GSS2$V202013 == 1, 1, 0)
+
+ANES_GSS2$CA_meetON <- ifelse(ANES_GSS2$V202013 == 1, 1, 0)
+
+ANES_GSS2$CA_pet <- ifelse(ANES_GSS2$V202026 == 1, 1, 0)
+
+ANES_GSS2$CA_cam <- ifelse(ANES_GSS2$V202016 == 1, 1, 0)
+
+ANES_GSS2$CA_voteblue <- ifelse(ANES_GSS2$V202073 == 1, 1, 0)
+
+ANES_GSS2$CA_disc <- ifelse(ANES_GSS2$V202022 == 1, 1, 0)
+
+alpha_result <- alpha(ANES_GSS2[, c("CA_con", "CA_pro", "CA_pet", "CA_meetIP", "CA_meetON", "CA_boyc", "CA_cam", "CA_don")])
+
+print(alpha_result)
+```
+#Getting CA
+
+#Creating new DF to test for CA
+```{r}
+
+testdf <- data.frame(CA_con, CA_out, CA_pet)
+
+```
+
+#Getting CA
+```{r}
+
+alpha(testdf[, c(CA_con, CA_out, CA_pet)])
+
+```
 
 #view item v202023
 ```{r}
